@@ -116,7 +116,7 @@ export function withTheme<T extends WithThemeProps = WithThemeProps>(
       const themeProps = getThemePropsFromSomeWhere();
 
       // this.props comes afterwards so the can override the default ones.
-      return <WrappedComponent {...themeProps} {...(this.props as T)} />;
+      return <WrappedComponent {...themeProps} {...this.props as T} />;
     }
   };
 }
@@ -135,7 +135,7 @@ export function inject<TProps, TInjectedKeys extends keyof TProps>(
   injector: Pick<TProps, TInjectedKeys>
 ) {
   return function Injected(props: Omit<TProps, TInjectedKeys>) {
-    return <Component {...(props as TProps)} {...injector} />;
+    return <Component {...props as TProps} {...injector} />;
   };
 }
 ```
@@ -273,9 +273,7 @@ export function withSubscription<T, P extends WithDataProps<T>, C>(
     render() {
       // the typing for spreading this.props is... very complex. best way right now is to just type it as any
       // data will still be typechecked
-      return (
-        <WrappedComponent data={this.state.data} {...(this.props as any)} />
-      );
+      return <WrappedComponent data={this.state.data} {...this.props as any} />;
     }
   };
   // return WithData;
@@ -309,7 +307,7 @@ function logProps<T>(WrappedComponent: React.ComponentType<T>) {
     }
     render() {
       // Wraps the input component in a container, without mutating it. Good!
-      return <WrappedComponent {...(this.props as T)} />;
+      return <WrappedComponent {...this.props as T} />;
     }
   };
 }
@@ -373,7 +371,10 @@ const commentActions = () => ({
   addComment: (str: string) => comments.push({ text: str, id: comments.length })
 });
 
-const ConnectedComment = connect(commentSelector, commentActions)(CommentList);
+const ConnectedComment = connect(
+  commentSelector,
+  commentActions
+)(CommentList);
 
 // these are the props to be injected by the HOC
 interface WithSubscriptionProps<T> {

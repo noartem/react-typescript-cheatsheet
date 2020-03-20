@@ -228,8 +228,8 @@ ReactDOM.render(
     items={["a", "b"]} // type of 'string' inferred
     renderItem={item => (
       <li key={item}>
-        {item.toPrecision(3)} // Error: Property 'toPrecision' does not exist on
-        type 'string'.
+        <!-- prettier-ignore -->
+        {item.toPrecision(3)} // Error: Property 'toPrecision' does not exist on type 'string'.
       </li>
     )}
   />,
@@ -453,9 +453,9 @@ const Link = <T extends {}>(
   props: LinkProps & T extends RouterLinkProps ? RouterLinkProps : AnchorProps
 ) => {
   if ((props as RouterLinkProps).to) {
-    return <NavLink {...(props as RouterLinkProps)} />;
+    return <NavLink {...props as RouterLinkProps} />;
   } else {
-    return <a {...(props as AnchorProps)} />;
+    return <a {...props as AnchorProps} />;
   }
 };
 
